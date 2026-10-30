@@ -1,0 +1,9 @@
+Execução: 2026-10-30T19:29:44.053993-03:00 | cpu | treino=50000 | teste_rapido=False
+Época 1/1 | lote 50/391 | 34.1s
+Época 1/1 | lote 100/391 | 77.6s
+Época 1/1 | lote 150/391 | 119.0s
+Época 1/1 | lote 200/391 | 161.7s
+Época 1/1 | lote 250/391 | 201.1s
+Época 1/1 | lote 300/391 | 238.0s
+Época 1/1 | lote 350/391 | 267.8s
+Época 1/1 concluída | D=0.7726 | G=1.5397 | 296.8s

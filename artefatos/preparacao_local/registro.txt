@@ -1,0 +1,34 @@
+============================================================
+SPRINT 1 - PREPARAÇÃO E PIPELINE DE DADOS (FASHION-MNIST)
+============================================================
+
+[1/5] Realizando download e ingestão do Fashion-MNIST...
+[2/5] Separação estratificada: 50.000 treino / 10.000 validação.
+ -> Conjunto de Treino: 50000 imagens
+ -> Conjunto de Validação: 10000 imagens
+ -> Conjunto de Teste Oficial (Reservado): 10000 imagens
+
+[3/5] Verificando integridade e balanceamento das classes:
+Classe          | Treino     | Validação 
+------------------------------------------
+Camiseta/Top    | 5000       | 1000      
+Calça           | 5000       | 1000      
+Pulôver         | 5000       | 1000      
+Vestido         | 5000       | 1000      
+Casaco          | 5000       | 1000      
+Sandália        | 5000       | 1000      
+Camisa          | 5000       | 1000      
+Tênis           | 5000       | 1000      
+Bolsa           | 5000       | 1000      
+Bota            | 5000       | 1000      
+
+[4/5] Instanciando DataLoaders e validando tensores...
+ -> Formato do lote de imagens: torch.Size([128, 1, 28, 28]) (Batch, Canal, Altura, Largura)
+ -> Formato do lote de rótulos: torch.Size([128])
+ -> Valor mínimo do pixel: -1.00
+ -> Valor máximo do pixel: 1.00
+
+[5/5] Gerando grade visual de amostras reais...
+ -> Evidência visual salva em: '/home/guilherme/Documentos/Github/gan-fashion-mnist/artefatos/preparacao_local/amostras_classes_reais.png'
+
+Processamento da Sprint 1 finalizado com sucesso!

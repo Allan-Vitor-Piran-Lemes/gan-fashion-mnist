@@ -1,0 +1,19 @@
+{
+  "semente": 42,
+  "dim_ruido": 100,
+  "batch_size": 128,
+  "taxa_aprendizado": 0.0002,
+  "betas": [
+    0.5,
+    0.999
+  ],
+  "imagens_treino": 50000,
+  "imagens_validacao_reservadas": 10000,
+  "imagens_teste_reservadas": 10000,
+  "teste_rapido": false,
+  "dispositivo": "cpu",
+  "threads": 2,
+  "pytorch": "2.5.1+cu121",
+  "epocas_solicitadas": 1,
+  "ultima_execucao": "2026-10-30T19:29:44.053993-03:00"
+}
