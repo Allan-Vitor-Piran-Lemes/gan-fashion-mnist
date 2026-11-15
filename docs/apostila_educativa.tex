@@ -36,7 +36,7 @@ O projeto foi desenvolvido na disciplina Oficina de Projetos em Ciência de Dado
 \section{O que é IA generativa?}
 Uma aplicação generativa produz conteúdo a partir de padrões aprendidos em dados. Neste projeto, o conteúdo é uma pequena imagem em tons de cinza. Durante o treinamento, o modelo recebe sinais que ajustam seus parâmetros; depois, o gerador salvo pode produzir imagens a partir de números aleatórios.
 
-A aplicação não recebe pedidos escritos como ``crie uma bota''. Ela também não possui um seletor de categoria. O modelo é \textbf{incondicional}: sua entrada é ruído numérico. Uma saída que lembra uma roupa é um resultado computacional, não uma prova de compreensão humana.
+A aplicação não recebe pedidos escritos como ``crie uma bota''. Ela também não possui um seletor de categoria. O modelo usado atualmente pela interface é \textbf{incondicional}: sua entrada é ruído numérico. Uma saída que lembra uma roupa é um resultado computacional, não uma prova de compreensão humana.
 
 \section{Fashion-MNIST: os exemplos de aprendizagem}
 A base Fashion-MNIST reúne dez categorias: camiseta/top, calça, pulôver, vestido, casaco, sandália, camisa, tênis, bolsa e bota~\cite{fashion}. Cada imagem tem $28\times28$ pixels, ou seja, 784 posições com intensidades de cinza. Ao ampliar a imagem, os pixels ficam visíveis; a ampliação não cria detalhes novos.
@@ -125,6 +125,17 @@ Resultados podem variar entre versões de bibliotecas e dispositivos. Compare im
 \item Por que o discriminador não precisa ser carregado para gerar na interface? \textit{Comentário:} ele forneceu sinais durante o treino; a geração utiliza somente os parâmetros aprendidos pelo gerador.
 \end{enumerate}
 Os autores podem usá-las para conferir a clareza das explicações durante a revisão do material.
+
+\section{Prática em notebooks: GAN condicional e evolução}
+A versão didática condicional está em três Jupyter Notebooks na pasta \path{notebooks/}. No primeiro, estudamos dados e rótulos; no segundo, definimos as redes, treinamos e salvamos a evolução; no terceiro, comparamos épocas e solicitamos categorias. Execute as células em ordem, com o ambiente indicado no README dos notebooks.
+
+Na cGAN, o gerador recebe ruído e classe; o discriminador recebe imagem e classe. A categoria é representada por parâmetros aprendidos nas duas redes. Isso permite solicitar uma bota ou uma calça, mas não garante que um modelo pouco treinado produza uma imagem reconhecível. A condição participa do aprendizado, em vez de selecionar resultados após a geração.
+
+Os painéis têm uma linha por classe e três colunas de ruídos fixos. Entre épocas, conservamos entradas e escala de cinza para observar a evolução. Registre quais contornos aparecem, quais categorias se confundem e se há diversidade dentro de cada classe. Não interprete perdas como porcentagens de acerto.
+
+O padrão do notebook é um teste curto com 200 imagens. Para uma experiência completa, configure 50.000 imagens usando \verb|TESTE_RAPIDO=False| e um novo nome. A validação e o teste oficial continuam reservados. As imagens de teste rápido não demonstram qualidade aprendida e não devem substituir os resultados de um treino completo na apostila.
+
+A nova arquitetura tem pesos próprios e não substitui automaticamente o modelo usado pela interface. Os exemplos anteriores desta apostila continuam sendo registros da versão incondicional. Os resultados condicionais devem ser identificados por execução e época e incorporados após o treinamento e a análise dos autores. A revisão autoral deve acrescentar as observações reais, sem antecipar resultados.
 
 \section{Revisão dos autores e próximos passos}
 Antes da entrega final, os autores devem conferir se os comandos funcionam, se as legendas identificam as execuções, se o texto corresponde ao comportamento da aplicação e se as limitações estão claras. Devem também acrescentar suas reflexões individuais e horas efetivas ao relatório. A continuação do treino permanece sem evidência local posterior à época 1; a mudança educativa não altera esse resultado técnico.

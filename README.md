@@ -38,7 +38,18 @@ Os registros de apoio devem ajudar a manter a continuidade entre conversas. Resu
 
 O documento de contexto da equipe informa seis itens da Sprint 3 concluídos no Jira. A revisão local não consultou diretamente o quadro nem comprovou a continuidade do treinamento prevista em SCRUM-11. Os componentes da interface e os materiais educativos que estavam ausentes foram implementados; essa diferença está detalhada em [docs/sprint3.md](docs/sprint3.md).
 
-## Como a GAN funciona
+## GAN condicional em Jupyter Notebook
+
+A implementação didática condicional está nos [três notebooks](notebooks/README.md): dados e rótulos, treinamento e evolução do aprendizado, e geração por categoria. Tanto o gerador quanto o discriminador recebem a classe. O código completo está nas células, com explicações para apoiar a apostila.
+
+```bash
+python3 -m pip install -r requirements-notebooks.txt
+python3 -m jupyter lab notebooks
+```
+
+Os notebooks constituem uma nova execução condicional, separada dos scripts e da interface incondicionais descritos abaixo, que permanecem compatíveis com seus modelos anteriores. Os novos checkpoints não podem ser carregados pela interface atual. O teste rápido padrão verifica funcionamento; ainda não há resultado de treinamento completo da cGAN para declarar qualidade de aprendizado.
+
+## Como funciona a versão Python usada pela interface
 
 O **gerador** recebe 100 números aleatórios e produz uma imagem de 28 × 28 pixels. O **discriminador** recebe imagens reais e geradas e aprende a distinguir suas origens. Durante o treinamento, as duas redes são atualizadas alternadamente.
 
