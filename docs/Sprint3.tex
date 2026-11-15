@@ -1,0 +1,189 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\IfFileExists{brazil.ldf}{\usepackage[brazil]{babel}}{%
+  \usepackage{babel}\babelprovide[main,import]{portuguese}}
+\usepackage[margin=2.5cm,headheight=16.6pt]{geometry}
+\usepackage{array,tabularx,booktabs}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\definecolor{azulProfessor}{HTML}{184C78}
+\definecolor{cinzaTitulos}{HTML}{1E1E1E}
+\definecolor{cinzaCabecalho}{gray}{0.5}
+\titleformat{\section}{\Large\bfseries\color{azulProfessor}}{\thesection.}{0.6em}{}[\titlerule]
+\titleformat{\subsection}{\large\bfseries\raggedright\color{cinzaTitulos}}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\raggedright\color{cinzaTitulos}}{\thesubsubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing*{\subsubsection}{0pt}{2.5ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+\setcounter{tocdepth}{2}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=azulProfessor,urlcolor=azulProfessor,citecolor=azulProfessor,linktoc=section,pdftitle={Laboratório Educativo de IA Generativa com GANs — Relatório Final — Sprint 3},pdfauthor={Allan Vitor Piran Lemes e Guilherme Rodrigues dos Santos}}
+\urlstyle{same}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{leftmargin=*,itemsep=5pt,topsep=6pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{cinzaCabecalho}Oficina de Projetos em Ciência de Dados e IA}
+\fancyhead[R]{\small\color{cinzaCabecalho}Relatório Final -- UTFPR}
+\fancyfoot[L]{\small\color{cinzaCabecalho}Documento de Ciência de Dados \& IA}
+\fancyfoot[R]{\small Página \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\newcommand{\pendente}[1]{\textit{#1}}
+
+\begin{document}
+\renewcommand{\contentsname}{Sumário}
+\renewcommand{\refname}{Referências}
+
+\begin{titlepage}
+\thispagestyle{fancy}
+\centering
+\vspace*{0.7cm}
+{\Large\bfseries UNIVERSIDADE TECNOLÓGICA FEDERAL DO PARANÁ\par}
+\vspace{0.15cm}
+{\large DEPARTAMENTO ACADÊMICO DE INFORMÁTICA\par}
+\vspace{0.1cm}
+{\small CAMPUS PATO BRANCO\par}
+\vspace{0.1cm}
+{\small OFICINA DE PROJETOS EM CIÊNCIA DE DADOS E IA\par}
+\vspace{1.6cm}
+\noindent\rule{\textwidth}{1pt}\par
+\vspace{0.2cm}
+{\Huge\bfseries\color{azulProfessor}Laboratório Educativo de IA\par Generativa com GANs\par}
+\vspace{0.35cm}
+{\large\bfseries RELATÓRIO FINAL DE PROJETO\par}
+\vspace{0.25cm}
+{\small Versão de trabalho: Sprint 3 e ajuste de escopo\par}
+\vspace{0.45cm}
+\noindent\rule{\textwidth}{1pt}\par
+\vspace{1.2cm}
+{\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{@{}ll@{}}
+\textbf{Equipe de Desenvolvimento:} & Allan Vitor Piran Lemes \\
+ & Guilherme Rodrigues dos Santos \\
+\textbf{Orientador / Prof.:} & Dr. Luiz Fernando Puttow Southier \\
+\textbf{Data de Atualização:} & 15 de novembro de 2026 \\
+\textbf{Versão do Documento:} & 3.0 \\
+\end{tabular}\par}
+\end{titlepage}
+\setcounter{page}{2}
+\tableofcontents
+\clearpage
+
+\section{Introdução e ajuste de escopo}
+O Laboratório Educativo de IA Generativa com GANs é desenvolvido por Allan Vitor Piran Lemes e Guilherme Rodrigues dos Santos na disciplina Oficina de Projetos em Ciência de Dados e IA, da UTFPR. O projeto reúne uma GAN com Fashion-MNIST, aplicação local e materiais introdutórios, com linguagem acessível ao ensino médio e a leitores iniciantes.
+
+\textbf{Em 15/11/2026, a equipe solicitou o ajuste da entrega educativa para produção de materiais e verificação pelos próprios autores.}
+
+O relatório anterior está em \path{docs/Sprint2.tex}. Esta versão mantém o histórico técnico, atualiza a forma de entrega e não substitui fatos anteriores por atividades fictícias. Os arquivos Markdown das sprints são memória de trabalho entre chats; o presente fonte LaTeX é a versão corrente de trabalho para entrega acadêmica.
+
+\section{Objetivos e entregáveis}
+O objetivo geral é desenvolver material educativo introdutório sobre IA generativa utilizando uma GAN treinada com Fashion-MNIST e uma aplicação local de demonstração. A entrega inclui apostila com explicações acessíveis, exemplos visuais, orientações de uso e aprendizados documentados da equipe.
+\begin{itemize}
+\item Compreender o papel do gerador, do discriminador e dos dados.
+\item Preparar os dados e adaptar uma implementação introdutória.
+\item Treinar a GAN, salvar o modelo e registrar a evolução visual.
+\item Disponibilizar aplicação local para conhecer a base, comparar épocas e gerar imagens.
+\item Produzir apostila, roteiro de exploração autônoma e documentação acadêmica.
+\item Verificar funcionamento e coerência dos materiais, com revisão pelos autores.
+\end{itemize}
+A interface não oferece escolha de classe nem download. A exportação de PNG é realizada por um script de terminal. A arquitetura incondicional recebe ruído, sem texto ou rótulo de categoria.
+
+\section{Metodologia e critérios de verificação}
+O trabalho combina estudo introdutório, implementação incremental, testes técnicos e análise visual descritiva. O Fashion-MNIST contém imagens de roupas e acessórios de $28\times28$ pixels em tons de cinza~\cite{fashionmnist}. A preparação separa as 60.000 imagens oficiais de treino em 50.000 para treino e 10.000 para validação, com estratificação e semente 42. As 10.000 imagens oficiais de teste permanecem separadas. Os pixels são normalizados para $[-1,1]$; validação e teste não atualizam as redes.
+
+O gerador transforma um vetor aleatório de dimensão 100 em imagem. O discriminador aprende a distinguir imagens reais das geradas. O treinamento alterna atualizações com Adam e perda binária. As perdas não são porcentagens de acerto. As imagens com ruído fixo permitem observar a evolução dentro de uma execução. O checkpoint guarda redes, otimizadores e estados aleatórios ao final da época; o gerador também é exportado separadamente.
+
+A conclusão técnica depende de arquivos existentes, execução dos comandos e correspondência entre exemplos e explicações. A revisão autoral deve conferir linguagem, limitações, identificação das imagens, instruções de uso e coerência do relatório. Os testes automáticos não substituem essa revisão; sua conclusão não foi informada pela equipe.
+
+\section{Histórico técnico das sprints}
+\subsection{Sprint 1: organização e preparação}
+O registro anterior descreve a organização do repositório e do quadro inicial de tarefas, além do desenvolvimento da preparação dos dados. Foram documentadas a divisão estratificada, a distribuição de 5.000 imagens por classe no treino e 1.000 na validação e a exportação de exemplos reais. As contribuições informadas foram organização do repositório, dados e caracterização do destinatário por Allan; organização do quadro e planejamento por Guilherme.
+
+O relatório anterior informa 3 horas de Allan e 2 de Guilherme, totalizando 5 horas diante de 10 previstas. Esses valores são preservados como informações anteriores da equipe, sem nova apuração nesta revisão. O desvio informado foi de $-50\%$, sem que isso comprove produtividade ou conclusão de todos os itens.
+
+\subsection{Sprint 2: implementação e primeiro treinamento}
+O commit \texttt{0523e6c}, de Allan, contém a implementação inicial e grades identificadas como épocas 0, 1, 5 e 15. O treinamento original carregava 60.000 imagens. Na adaptação local, registrada em \texttt{451cde6}, a arquitetura foi mantida e o treino passou a usar a divisão de 50.000 imagens. Foram acrescentados retomada, registros, visualização em modo de avaliação e geração a partir do modelo salvo.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}YY@{}}
+\toprule
+\textbf{Execução local documentada} & \textbf{Resultado} \\
+\midrule
+Identificação & \path{sprint2_local} \\
+Épocas completas / imagens de treino & 1 / 50.000 \\
+Lote máximo / semente & 128 / 42 \\
+Adam: taxa / coeficientes & 0,0002 / 0,5 e 0,999 \\
+Processamento & CPU, duas threads \\
+Tempo do laço & 296,8 segundos \\
+Perdas médias D / G & 0,7726 / 1,5397 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Esses resultados pertencem à Sprint 2 e continuam sendo os últimos comprovados pelo histórico local. O tempo não inclui download e exportação, nem equivale a horas ativas dos autores. As grades antigas de 15 épocas são de outra execução, sem checkpoint correspondente comprovado neste checkout.
+
+Foram verificados separação dos dados, carregamento do gerador, retomada equivalente ao treino contínuo em CPU e preservação das estatísticas da rede durante a visualização. As imagens locais iniciais ainda apresentam borramento e padrões quadriculados. Não há métrica quantitativa de qualidade implementada.
+
+\subsection{Sprint 3: aplicação e materiais}
+O registro fornecido pela equipe informa seis itens concluídos no Jira, com prazo planejado de 13/11/2026. A revisão do checkout em 15/11/2026 encontrou o modelo local da época 1 e ausência de interface e materiais específicos da Sprint 3. Esses artefatos foram implementados durante a intervenção registrada, sem atribuir automaticamente aos responsáveis informados a autoria de cada alteração. O Jira não foi acessado nem alterado neste ajuste.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}lYY@{}}
+\toprule
+\textbf{Item} & \textbf{Responsável informado} & \textbf{Evidência atual} \\
+\midrule
+SCRUM-11 & Guilherme & Gerador utilizável da época 1; continuidade do treino não comprovada. \\
+SCRUM-12 & Allan & Comparação de épocas originais 0, 5 e 15; execução local separada. \\
+SCRUM-13 & Guilherme & Aplicação Streamlit com exemplos, comparação e geração. \\
+SCRUM-14 & Allan & Explicações sobre dados, redes e limitações; revisão autoral final a registrar. \\
+SCRUM-26 & Guilherme & Fluxograma técnico e diagrama simplificado na aplicação. \\
+SCRUM-15 & Allan & Roteiro autônomo, memória técnica e organização documental. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+As estimativas informadas para SCRUM-11, 12, 13, 14 e 15 são, respectivamente, 5, 4, 5, 3 e 3 horas. Somam 20 horas previstas, com 10 para cada integrante; SCRUM-26 não possui estimativa informada. As horas efetivas das Sprints 2 e 3 e reflexões individuais não foram fornecidas. Não se calcula desvio dessas etapas sem esses dados.
+
+A aplicação permite mudar a semente e gerar 16 imagens com o modelo salvo. Os testes funcionais verificaram abertura, troca da comparação, geração, formato, intervalo dos pixels, repetição por semente, alteração por nova semente e mensagem de modelo ausente. O servidor respondeu à verificação de funcionamento. Não houve inspeção visual em navegador.
+
+\section{Materiais educativos e uso}
+A apostila \path{docs/apostila_educativa.tex} apresenta conceitos, imagens identificadas, orientações e questões comentadas. O roteiro \path{docs/roteiro_sprint3.md} orienta leitura autônoma por aproximadamente 25 minutos e pode apoiar a apresentação acadêmica ao professor. O fluxograma está em \path{docs/fluxograma.md}; a aplicação contém uma versão simplificada.
+
+Na raiz do repositório, após instalar as dependências:
+\begin{quote}
+\small\verb|python -m streamlit run app.py --server.address 127.0.0.1|
+\end{quote}
+O endereço local é \url{http://localhost:8501}. A geração exige \path{checkpoints/sprint2_local/gerador.pt}, fora do Git. Os exemplos salvos podem ser consultados sem executar outro treinamento. As grades originais usam contraste automático e modo de treino; as locais usam escala fixa e modo de avaliação. A aplicação mantém as execuções separadas.
+
+\section{Riscos, limitações e próximos passos}
+\begin{itemize}
+\item Dificuldade conceitual: manter explicações introdutórias, conferir o código e revisar a apostila pelos autores.
+\item Treino demorado ou interrompido: testar antes, salvar por época e retomar o checkpoint. Uma época incompleta será refeita.
+\item Imagens ambíguas: apresentar limitações e observar evolução sem afirmar qualidade ou acurácia inexistentes.
+\item Falta de tempo: priorizar artefatos executáveis, revisão dos materiais e consolidação do relatório.
+\item Divergência documental: distinguir execução original e local, estimativas e horas efetivas, estado informado no Jira e evidência disponível.
+\end{itemize}
+Permanecem necessários a confirmação de eventual modelo posterior ou o registro da continuação do treinamento, a revisão final dos materiais pelos autores, as horas e reflexões individuais e a consolidação do relatório final. Não foi executado treinamento adicional para este ajuste de escopo. A geração por classe não integra a implementação atual.
+
+\section{Conclusão parcial}
+O projeto dispõe de uma GAN executável, checkpoint local de uma época, registros visuais, aplicação Streamlit e materiais introdutórios. A entrega educativa passou a se concentrar na apostila, documentação e exploração local. A mudança altera a forma de entrega, sem ampliar artificialmente os resultados técnicos. O fechamento acadêmico deve refletir as evidências e a revisão dos autores, preservando o histórico e as limitações descritas.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{Referências}
+\bibitem{fashionmnist} XIAO, Han; RASUL, Kashif; VOLLGRAF, Roland. \textbf{Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms}. 2017. \url{https://github.com/zalandoresearch/fashion-mnist}.
+\bibitem{pytorch} PYTORCH. \textbf{DCGAN Tutorial}. \url{https://docs.pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html}.
+\bibitem{checkpoint} PYTORCH. \textbf{Saving and Loading Models}. \url{https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html}.
+\bibitem{registros} EQUIPE DO PROJETO. Registros técnicos internos das Sprints 2 e 3 e artefatos de execução. Arquivos locais de apoio; não substituem os relatórios oficiais.
+\end{thebibliography}
+\end{document}
