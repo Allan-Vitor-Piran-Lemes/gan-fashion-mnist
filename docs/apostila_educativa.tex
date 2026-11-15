@@ -1,0 +1,149 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\IfFileExists{brazil.ldf}{\usepackage[brazil]{babel}}{\usepackage{babel}\babelprovide[main,import]{portuguese}}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.5em}
+% Compilar da raiz ou de docs/. Ausências são identificadas no PDF.
+\newcommand{\figura}[3]{%
+\begin{figure}[htbp]\centering
+\IfFileExists{artefatos/#1}{\includegraphics[width=#2\linewidth]{artefatos/#1}}{%
+\IfFileExists{../artefatos/#1}{\includegraphics[width=#2\linewidth]{../artefatos/#1}}{%
+\fbox{\parbox{0.85\linewidth}{Figura indisponível nesta cópia: \path{#1}. Consulte a pasta de artefatos do projeto.}}}}
+\caption{#3}\end{figure}}
+\title{Como uma IA aprende a criar imagens?\\\large Apostila introdutória do Laboratório Educativo de IA Generativa com GANs}
+\author{Allan Vitor Piran Lemes\\Guilherme Rodrigues dos Santos\\\small Engenharia de Computação --- UTFPR, campus Pato Branco}
+\date{Versão de trabalho --- 15 de novembro de 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Esta apostila apresenta uma experiência de graduação com uma GAN e a base Fashion-MNIST. Foi escrita para leitores iniciantes, com linguagem acessível ao ensino médio. Você pode ler os exemplos e explorar uma aplicação local, sem precisar compreender toda a matemática das redes neurais. O material integra uma entrega de código, documentação e exemplos revisáveis pelos autores.
+\end{abstract}
+\tableofcontents
+\clearpage
+
+\section{Como usar este material}
+Reserve de 20 a 30 minutos para uma primeira leitura. Observe as imagens, leia as explicações e, se tiver o ambiente instalado, experimente a aplicação. As perguntas finais servem para reflexão autônoma.
+
+O projeto foi desenvolvido na disciplina Oficina de Projetos em Ciência de Dados e IA. Seu objetivo é explicar a construção de uma GAN simples, seus resultados e dificuldades. O relatório acadêmico registra o desenvolvimento; esta apostila orienta a compreensão e o uso do protótipo. A revisão final de linguagem e conteúdo pelos autores ainda deve ser registrada.
+
+\section{O que é IA generativa?}
+Uma aplicação generativa produz conteúdo a partir de padrões aprendidos em dados. Neste projeto, o conteúdo é uma pequena imagem em tons de cinza. Durante o treinamento, o modelo recebe sinais que ajustam seus parâmetros; depois, o gerador salvo pode produzir imagens a partir de números aleatórios.
+
+A aplicação não recebe pedidos escritos como ``crie uma bota''. Ela também não possui um seletor de categoria. O modelo usado atualmente pela interface é \textbf{incondicional}: sua entrada é ruído numérico. Uma saída que lembra uma roupa é um resultado computacional, não uma prova de compreensão humana.
+
+\section{Fashion-MNIST: os exemplos de aprendizagem}
+A base Fashion-MNIST reúne dez categorias: camiseta/top, calça, pulôver, vestido, casaco, sandália, camisa, tênis, bolsa e bota~\cite{fashion}. Cada imagem tem $28\times28$ pixels, ou seja, 784 posições com intensidades de cinza. Ao ampliar a imagem, os pixels ficam visíveis; a ampliação não cria detalhes novos.
+
+O conjunto oficial tem 60.000 imagens de treino e 10.000 de teste. Na preparação local, o treino oficial foi dividido em 50.000 imagens para treinar e 10.000 reservadas para validação. A separação mantém as proporções das categorias e usa semente 42. O teste oficial continua separado. Não foi implementada uma métrica de validação nesta etapa.
+\figura{amostras_classes_reais.png}{1.0}{Exemplos reais das dez classes, exportados na preparação original. Não são imagens produzidas pela GAN.}
+
+\section{Duas redes com funções diferentes}
+\textbf{Gerador:} recebe 100 números e os transforma em uma imagem de $28\times28$ pixels. No início, seus parâmetros ainda não aprenderam a representar padrões de roupas.
+
+\textbf{Discriminador:} recebe imagens reais e imagens produzidas pelo gerador. Durante o treino, aprende a distinguir essas duas origens. Seu erro também fornece um sinal para ajustar o gerador.
+
+As atualizações se alternam: primeiro o discriminador aprende com exemplos reais e gerados; depois o gerador é ajustado para produzir imagens que o discriminador considere reais. Essa competição é a ideia central de uma rede adversarial generativa. A palavra ``enganar'', comum nessa explicação, é uma analogia: as redes apenas executam operações numéricas.
+
+Depois de treinado, o gerador funciona sem usar o discriminador para produzir imagens na interface. A aplicação carrega os pesos salvos e executa a geração; não treina novamente.
+
+\section{Cinco termos importantes}
+\begin{description}
+\item[Ruído:] números aleatórios usados como entrada do gerador. Não é uma foto escondida na entrada.
+\item[Época:] uma passagem pelo conjunto de treino. Nesta execução completa, são 50.000 imagens por época.
+\item[Lote:] grupo de imagens processadas juntas. O tamanho máximo registrado foi 128.
+\item[Semente:] número usado para repetir uma sequência pseudoaleatória. Com o mesmo modelo e ambiente, a mesma semente permite repetir a geração. A semente não escolhe uma classe.
+\item[Perda:] valor calculado para orientar o ajuste de uma rede. Não é uma porcentagem de imagens corretas. Uma perda menor isoladamente não garante imagens melhores.
+\end{description}
+O ruído fixo usado nos painéis por época permite comparar a saída para as mesmas entradas ao longo do aprendizado. Isso difere de gerar novos exemplos com sementes diferentes.
+
+\section{Etapas do desenvolvimento e aprendizados documentados}
+\subsection{Preparar antes de treinar}
+Na Sprint 1, foram organizados os arquivos e a base, conferidos formatos, proporções das classes e intensidades dos pixels. Esse procedimento mostra por que o acesso aos dados deve ser verificado antes de executar uma rede.
+
+\subsection{Conectar preparação e treinamento}
+Na implementação inicial, o treinamento usava as 60.000 imagens oficiais. A adaptação da Sprint 2 passou a usar as 50.000 imagens da divisão local. Esse ajuste exemplifica a necessidade de conferir se a preparação descrita realmente é utilizada no código de treinamento.
+
+Também foram adicionados salvamento e retomada. Os testes curtos compararam duas épocas contínuas com uma época seguida de retomada, obtendo os mesmos pesos e perdas no ambiente CPU testado. Isso é uma verificação técnica, não uma medida de qualidade visual.
+
+\subsection{Transformar código em material educativo}
+A Sprint 3 acrescentou abas para exemplos, comparação, geração e explicações. A interface torna a operação acessível, mas os textos precisam distinguir os limites do modelo e a origem das imagens. A apostila e o relatório atual organizam essas evidências.
+
+\textbf{Contribuições pessoais a preencher pelos autores:} Allan e Guilherme devem registrar separadamente o que compreenderam, uma dificuldade concreta e como a enfrentaram, além das horas efetivas. Esses relatos não foram fornecidos; os parágrafos acima descrevem aprendizados técnicos sustentados pelo código e pelos registros, sem atribuir sentimentos ou reflexões individuais.
+
+\section{Observe os resultados sem misturar execuções}
+\subsection{Execução local documentada}
+O histórico local registra uma época completa, em CPU, com 50.000 imagens e duração de 296,8 segundos no laço de treino. As perdas médias foram 0,7726 para o discriminador e 1,5397 para o gerador. Esses números não representam acurácia.
+
+As duas figuras seguintes usam a mesma execução, ruído fixo, modo de avaliação e escala de cinza fixa. Na época 0 aparecem texturas; após uma época, surgem contornos que lembram roupas ou calçados, ainda borrados e com padrões quadriculados.
+\figura{sprint2_local/epoca_000.png}{0.62}{Execução local: época 0, antes do treinamento.}
+\figura{sprint2_local/epoca_001.png}{0.62}{Execução local: época 1, após uma passagem pelas 50.000 imagens.}
+\clearpage
+\subsection{Registro original da equipe}
+Há também grades antigas das épocas 0, 1, 5 e 15. Elas pertencem à execução original, com outro uso dos dados e visualização em modo de treino e contraste automático. A interface compara as épocas 0, 5 e 15 dessa origem separadamente. A imagem abaixo não é uma continuação da época local apresentada antes.
+\figura{sprint2_epoca_15.png}{0.62}{Época 15 da execução original de Allan. Não corresponde ao checkpoint local de uma época.}
+O checkpoint correspondente à execução antiga não está comprovado nesta cópia. Por isso, a geração ao vivo usa o modelo local da época 1. As formas das imagens antigas são mais reconhecíveis, mas não se deve atribuir a elas o tempo ou as perdas do treino local.
+
+\section{Executar e explorar a aplicação}
+É necessário Python com as dependências listadas em \path{requirements.txt}. Consulte o README para criar um ambiente virtual. Na raiz do projeto:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python -m streamlit run app.py --server.address 127.0.0.1
+\end{verbatim}
+Abra \url{http://localhost:8501}. A aplicação tem quatro abas:
+\begin{enumerate}
+\item Conheça os dados: observe os exemplos reais e suas categorias.
+\item Observe a evolução: escolha a execução original ou local e leia as legendas.
+\item Gere imagens: escolha uma semente e clique em ``Gerar 16 imagens''.
+\item Entenda o processo: consulte o diagrama e as limitações.
+\end{enumerate}
+Para gerar novas imagens, é necessário o arquivo \path{checkpoints/sprint2_local/gerador.pt}. Ele fica fora do Git e deve ser transferido separadamente ao copiar o projeto. Se estiver ausente, a aplicação informa o problema; os painéis salvos ainda podem ser consultados. Para encerrar o servidor, pressione Ctrl+C no terminal.
+
+A interface não oferece download. O script \path{gerar_imagens.py} exporta uma grade PNG; por exemplo:
+\begin{verbatim}
+python gerar_imagens.py --semente 456
+\end{verbatim}
+Esse comando usa o modelo e a pasta de saída padrão. Se a imagem já existir, o script pede outra pasta; consulte \verb|python gerar_imagens.py --help| e use \verb|--saida| para preservar o arquivo existente. Não é necessário executar outro treinamento para explorar o modelo salvo.
+
+\section{Limitações e interpretação responsável}
+A resolução é pequena e as imagens podem ser ambíguas ou repetitivas. O modelo não escolhe classe, não recebe texto e não garante variedade ou qualidade. Uma imagem convincente não comprova que a rede compreende roupas nem que não memorizou padrões. Este projeto não mediu memorização ou qualidade por métricas específicas.
+
+Resultados podem variar entre versões de bibliotecas e dispositivos. Compare imagens identificadas da mesma execução e use as perdas como acompanhamento, não como nota de qualidade. Sempre apresente as saídas como imagens geradas por IA e identifique exemplos reais separadamente.
+
+\section{Atividades de observação e reflexão}
+\begin{enumerate}
+\item Compare as épocas locais 0 e 1. O que mudou? \textit{Comentário:} procure contornos e contrastes, mas também falhas. Não é necessário atribuir uma categoria a todas as imagens.
+\item Gere duas vezes com a mesma semente. Depois troque a semente. \textit{Comentário:} com o mesmo modelo e ambiente, a entrada repetida produz a mesma saída. Mudar a semente altera o ruído, não representa novo treinamento.
+\item Uma perda de 0,77 significa 77\% de acerto? \textit{Comentário:} não. É um valor de uma função usada para ajustar parâmetros, sem essa interpretação percentual.
+\item É correto comparar a época local 1 com a antiga 15 como uma única sequência? \textit{Comentário:} não; as execuções e procedimentos diferem. Consulte a origem antes de interpretar uma evolução.
+\item Por que o discriminador não precisa ser carregado para gerar na interface? \textit{Comentário:} ele forneceu sinais durante o treino; a geração utiliza somente os parâmetros aprendidos pelo gerador.
+\end{enumerate}
+Os autores podem usá-las para conferir a clareza das explicações durante a revisão do material.
+
+\section{Prática em notebooks: GAN condicional e evolução}
+A versão didática condicional está em três Jupyter Notebooks na pasta \path{notebooks/}. No primeiro, estudamos dados e rótulos; no segundo, definimos as redes, treinamos e salvamos a evolução; no terceiro, comparamos épocas e solicitamos categorias. Execute as células em ordem, com o ambiente indicado no README dos notebooks.
+
+Na cGAN, o gerador recebe ruído e classe; o discriminador recebe imagem e classe. A categoria é representada por parâmetros aprendidos nas duas redes. Isso permite solicitar uma bota ou uma calça, mas não garante que um modelo pouco treinado produza uma imagem reconhecível. A condição participa do aprendizado, em vez de selecionar resultados após a geração.
+
+Os painéis têm uma linha por classe e três colunas de ruídos fixos. Entre épocas, conservamos entradas e escala de cinza para observar a evolução. Registre quais contornos aparecem, quais categorias se confundem e se há diversidade dentro de cada classe. Não interprete perdas como porcentagens de acerto.
+
+O padrão do notebook é um teste curto com 200 imagens. Para uma experiência completa, configure 50.000 imagens usando \verb|TESTE_RAPIDO=False| e um novo nome. A validação e o teste oficial continuam reservados. As imagens de teste rápido não demonstram qualidade aprendida e não devem substituir os resultados de um treino completo na apostila.
+
+A nova arquitetura tem pesos próprios e não substitui automaticamente o modelo usado pela interface. Os exemplos anteriores desta apostila continuam sendo registros da versão incondicional. Os resultados condicionais devem ser identificados por execução e época e incorporados após o treinamento e a análise dos autores. A revisão autoral deve acrescentar as observações reais, sem antecipar resultados.
+
+\section{Revisão dos autores e próximos passos}
+Antes da entrega final, os autores devem conferir se os comandos funcionam, se as legendas identificam as execuções, se o texto corresponde ao comportamento da aplicação e se as limitações estão claras. Devem também acrescentar suas reflexões individuais e horas efetivas ao relatório. A continuação do treino permanece sem evidência local posterior à época 1; a mudança educativa não altera esse resultado técnico.
+
+\begin{thebibliography}{9}
+\bibitem{fashion} XIAO, Han; RASUL, Kashif; VOLLGRAF, Roland. \textbf{Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms}. 2017. \url{https://github.com/zalandoresearch/fashion-mnist}.
+\bibitem{dcgan} PYTORCH. \textbf{DCGAN Tutorial}. Referência introdutória utilizada no apoio à adaptação. \url{https://docs.pytorch.org/tutorials/beginner/dcgan_faces_tutorial.html}.
+\bibitem{salvar} PYTORCH. \textbf{Saving and Loading Models}. Referência sobre modelos e checkpoints. \url{https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html}.
+\bibitem{equipe} EQUIPE DO PROJETO. Código-fonte, históricos e imagens das Sprints 1 a 3. Repositório local \texttt{gan-fashion-mnist}. Os registros Markdown são apoio de desenvolvimento; o relatório acadêmico é mantido em LaTeX.
+\end{thebibliography}
+\end{document}

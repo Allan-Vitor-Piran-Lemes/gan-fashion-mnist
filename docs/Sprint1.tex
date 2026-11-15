@@ -1,0 +1,271 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\IfFileExists{brazil.ldf}{\usepackage[brazil]{babel}}{%
+  \usepackage{babel}\babelprovide[main,import]{portuguese}}
+\usepackage[margin=2.5cm,headheight=16.6pt]{geometry}
+\usepackage{array,tabularx,booktabs}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\definecolor{azulProfessor}{HTML}{184C78}
+\definecolor{cinzaTitulos}{HTML}{1E1E1E}
+\definecolor{cinzaCabecalho}{gray}{0.5}
+\titleformat{\section}{\Large\bfseries\color{azulProfessor}}{\thesection.}{0.6em}{}[\titlerule]
+\titleformat{\subsection}{\large\bfseries\raggedright\color{cinzaTitulos}}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\raggedright\color{cinzaTitulos}}{\thesubsubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing*{\subsubsection}{0pt}{2.5ex plus 1ex minus .2ex}{1.2ex plus .2ex}
+\setcounter{tocdepth}{2}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=azulProfessor,urlcolor=azulProfessor,citecolor=azulProfessor,linktoc=section,pdftitle={Laboratório Educativo de IA Generativa com GANs — Relatório Final — Sprint 1},pdfauthor={Allan Vitor Piran Lemes e Guilherme Rodrigues dos Santos}}
+\urlstyle{same}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\arraystretch}{1.2}
+\setlist[itemize]{leftmargin=*,itemsep=5pt,topsep=6pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{cinzaCabecalho}Oficina de Projetos em Ciência de Dados e IA}
+\fancyhead[R]{\small\color{cinzaCabecalho}Relatório Final -- UTFPR}
+\fancyfoot[L]{\small\color{cinzaCabecalho}Documento de Ciência de Dados \& IA}
+\fancyfoot[R]{\small Página \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\newcommand{\pendente}[1]{\textit{#1}}
+
+\begin{document}
+\renewcommand{\contentsname}{Sumário}
+\renewcommand{\refname}{Referências}
+
+\begin{titlepage}
+\thispagestyle{fancy}
+\centering
+\vspace*{0.7cm}
+{\Large\bfseries UNIVERSIDADE TECNOLÓGICA FEDERAL DO PARANÁ\par}
+\vspace{0.15cm}
+{\large DEPARTAMENTO ACADÊMICO DE INFORMÁTICA\par}
+\vspace{0.1cm}
+{\small CAMPUS PATO BRANCO\par}
+\vspace{0.1cm}
+{\small OFICINA DE PROJETOS EM CIÊNCIA DE DADOS E IA\par}
+\vspace{1.6cm}
+\noindent\rule{\textwidth}{1pt}\par
+\vspace{0.2cm}
+{\Huge\bfseries\color{azulProfessor}Laboratório Educativo de IA\par Generativa com GANs\par}
+\vspace{0.35cm}
+{\large\bfseries RELATÓRIO FINAL DE PROJETO\par}
+\vspace{0.25cm}
+{\small Atualização parcial: encerramento da Sprint 1\par}
+\vspace{0.45cm}
+\noindent\rule{\textwidth}{1pt}\par
+\vspace{1.2cm}
+{\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{@{}ll@{}}
+\textbf{Equipe de Desenvolvimento:} & Allan Vitor Piran Lemes \\
+ & Guilherme Rodrigues dos Santos \\
+\textbf{Orientador / Prof.:} & Dr. Luiz Fernando Puttow Southier \\
+\textbf{Data de Atualização:} & 9 de outubro de 2026 \\
+\textbf{Versão do Documento:} & 1.2 \\
+\end{tabular}\par}
+\end{titlepage}
+\setcounter{page}{2}
+\tableofcontents
+\clearpage
+
+\section{Introdução}
+Este relatório acompanha o desenvolvimento do Laboratório Educativo de IA Generativa com GANs, proposto para apresentar conceitos de inteligência artificial a estudantes do ensino médio por meio de uma apostila e de uma aplicação local. O projeto será desenvolvido por dois estudantes, com atividades de estudo, implementação e documentação distribuídas nas sprints previstas no Plano de Projeto entregue
+
+A proposta consiste em utilizar uma Rede Adversarial Generativa (GAN) treinada com o Fashion-MNIST, uma base de imagens de roupas, calçados e acessórios. As imagens possuem resolução de $28\times28$ pixels, em tons de cinza~\cite{fashionmnist}. A aplicação educativa deverá mostrar exemplos da base, permitir a comparação de imagens geradas em diferentes momentos do treinamento e oferecer geração, visualização e download de imagens.
+
+A utilidade do produto está em tornar o funcionamento da IA generativa mais acessível por meio de uma demonstração prática. A baixa resolução será apresentada como característica e limitação do modelo. O roteiro previsto terá duração inicial de 20 a 30 minutos e orientará a leitura e exploração autônoma por leitores iniciantes. O treinamento será realizado previamente pela equipe.
+
+\textbf{Esta versão registra somente o encerramento da Sprint 1, de 02/10 a 09/10/2026.} As atividades relatadas compreendem a organização do trabalho, a preparação inicial dos dados e a definição dos leitores pretendidos. O desenvolvimento e o treinamento da GAN, a interface e a apostila permanecem como etapas posteriores. O relatório será atualizado ao final de cada sprint.
+
+
+\section{Objetivos do Projeto}
+\subsection{Objetivos}
+O objetivo geral é desenvolver um laboratório educativo com uma GAN treinada no Fashion-MNIST, para apoiar a introdução à IA generativa no ensino médio por meio de materiais introdutórios, registrando o desenvolvimento e os aprendizados da equipe.
+
+Os objetivos específicos do projeto são:
+\begin{itemize}
+\item Estudar o funcionamento da GAN, identificando o papel do gerador e do discriminador, e conhecer a base de dados utilizada.
+\item Preparar o ambiente e adaptar uma implementação introdutória ao projeto.
+\item Treinar o modelo e registrar a evolução visual das imagens geradas.
+\item Construir uma interface simples para conhecer a base, comparar momentos do treinamento e gerar, visualizar e baixar imagens.
+\item Documentar o código, as atividades, as dificuldades e os aprendizados de cada sprint.
+\item Preparar material pedagógico e um roteiro de uso voltados ao ensino médio e a leitores iniciantes.
+\end{itemize}
+
+Esses objetivos abrangem o projeto completo. Na Sprint 1, o trabalho se concentrou na organização da equipe, no contato inicial com os dados e na caracterização da proposta educativa. A seleção de categorias de vestuário mencionada no planejamento corresponde a uma evolução posterior da geração básica e não integra as entregas desta sprint.
+
+\subsection{Restrições Técnicas, Regulatórias e Éticas}
+O desenvolvimento deve ser compatível com o tempo da disciplina, os recursos disponíveis e os conhecimentos adquiridos pelos integrantes durante o trabalho. Serão utilizados computadores pessoais e recursos gratuitos das ferramentas escolhidas. O uso de um ambiente de treinamento em nuvem será avaliado apenas se necessário e conforme sua disponibilidade.
+
+O planejamento considera dedicação média de cinco horas semanais por integrante. As quatro sprints abrangem nove semanas, com mais duas semanas previstas para a consolidação do relatório e da apresentação. A data final de 18/12/2026 permanece sujeita à confirmação.
+
+As fontes de dados e os exemplos de código efetivamente utilizados deverão ser identificados. As imagens geradas serão apresentadas como resultados de IA, incluindo suas limitações. A avaliação prevista é descritiva: funcionamento da aplicação, evolução visual e revisão dos materiais pelos autores. Não foi estabelecida uma porcentagem de acerto para a GAN.
+
+As 10.000 imagens do conjunto oficial de teste do Fashion-MNIST devem permanecer fora do treinamento. A divisão adicional realizada na Sprint 1 utiliza apenas o conjunto oficial de treinamento, conforme detalhado na Seção~\ref{sec:dados}.
+
+\subsection{Avaliação e Acurácia das Estimativas (Planejado vs. Executado)}
+O plano adotou uma estimativa baseada na capacidade da equipe. Foram previstas 110 horas-pessoa para o projeto: 90 horas nas quatro sprints e 20 horas para a etapa final. Esse total representa uma previsão, e não o esforço já realizado. Para esta atualização, a comparação se limita à Sprint 1, cuja capacidade prevista é de 10 horas-pessoa, incluindo o planejamento inicial.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}YrrY@{}}
+\toprule
+\textbf{Integrante} & \textbf{Horas previstas} & \textbf{Custo ilustrativo} & \textbf{Horas realizadas} \\
+\midrule
+Allan Vitor Piran Lemes & 5 & R\$ 100,00 &  3 \\
+Guilherme Rodrigues dos Santos & 5 & R\$ 100,00 & 2 \\
+\midrule
+\textbf{Total da Sprint 1} & \textbf{10} & \textbf{R\$ 200,00} & \textbf{5} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+O custo ilustrativo segue o valor de R\$ 20,00 por hora definido no plano. Assim, o projeto completo possui estimativa de R\$ 2.200,00, dos quais R\$ 200,00 correspondem à Sprint 1. Esses valores atendem ao exercício de planejamento e não representam pagamento aos estudantes. O desembolso direto previsto é de R\$ 0,00, com uso dos recursos já disponíveis; esta versão não apresenta um levantamento de despesas efetivamente realizadas.
+
+A variação do esforço será calculada após a consolidação das horas individuais:
+\[
+\text{Desvio (\%)} =
+\frac{\text{Horas realizadas} - \text{Horas previstas}}
+     {\text{Horas previstas}} \times 100.
+\]
+
+Não foi calculado um desvio nesta atualização porque as horas realizadas não foram informadas. O período de referência encerra-se em 09/10/2026; a avaliação de cumprimento das tarefas está na Seção~\ref{sec:comparacao}. Eventuais diferenças de esforço deverão ser explicadas com base nas atividades e dificuldades efetivamente registradas. O tempo em que o computador executa tarefas sozinho não deve ser contabilizado como dedicação ativa da equipe.
+
+\section{Gestão de Riscos do Projeto}
+Os quatro riscos abaixo correspondem ao planejamento entregue. Nesta versão, sua análise é parcial e se limita à Sprint 1. A ausência de um registro de ocorrência não será interpretada como confirmação de que o risco não ocorreu.
+
+\subsection*{R01 — Dificuldade para compreender ou executar a GAN}
+\textbf{Previsão:} probabilidade alta e impacto alto. A prevenção consiste em começar com um exemplo introdutório, estudar em conjunto e testar cada etapa. Caso necessário, a equipe buscará apoio do professor e adotará uma implementação menor, preservando a geração básica.
+
+\textbf{Situação na Sprint 1:} o registro contempla a preparação dos dados, sem resultados de implementação ou treinamento da GAN. A ocorrência desse risco e a eficácia das ações relacionadas ao modelo ainda não podem ser avaliadas.
+
+\subsection*{R02 — Treinamento demorado ou interrompido}
+\textbf{Previsão:} probabilidade média e impacto médio. Estão previstos um teste curto antes de execuções maiores e o salvamento do progresso. A contingência é retomar a versão salva ou avaliar outro ambiente gratuito disponível, reduzindo o tempo de treinamento se necessário.
+
+\textbf{Situação na Sprint 1:} não há treinamento registrado nesta etapa. Ainda não existem informações sobre duração, interrupções ou necessidade de mudança de ambiente.
+
+\subsection*{R03 — Imagens pouco reconhecíveis}
+\textbf{Previsão:} probabilidade alta e impacto médio. A prevenção é conferir os dados e acompanhar as imagens desde os primeiros testes. Caso o risco ocorra, serão revisados o exemplo utilizado e pequenos ajustes, registrando as limitações e preservando tempo para concluir a aplicação.
+
+\textbf{Situação na Sprint 1:} foi relatada a exportação de um painel com imagens da base. Esse painel apoia o contato inicial com os dados, mas não permite avaliar a qualidade de imagens geradas, pois não há resultados da GAN nesta atualização.
+
+\subsection*{R04 — Falta de tempo para concluir as atividades}
+\textbf{Previsão:} probabilidade média e impacto alto. A prevenção é acompanhar as tarefas no Jira e comparar o trabalho restante com a capacidade da sprint. A contingência é adiar melhorias opcionais e priorizar a demonstração educativa, as funções básicas e os registros das entregas.
+
+\textbf{Situação na Sprint 1:} o quadro inicial do Jira e os prazos das quatro sprints foram organizados. Essa ação fornece uma base para o acompanhamento, mas ainda não há horas consolidadas ou histórico suficiente para avaliar sua eficácia na prevenção de atrasos. Não foi apresentado um registro específico de ocorrência desse risco.
+
+\section{Execução por Sprints e Alocação de Recursos}
+O desenvolvimento está organizado em quatro sprints e uma etapa de consolidação final. A equipe é formada por Allan Vitor Piran Lemes e Guilherme Rodrigues dos Santos. Os percentuais associados às entregas representam pesos de avaliação da disciplina, e não percentuais de conclusão ou de esforço.
+
+\subsection{Primeira Sprint: Organização, Jira e Contato com os Dados}
+
+O objetivo desta sprint foi estabelecer a organização inicial do trabalho, preparar o acesso à base Fashion-MNIST e relacionar a proposta técnica à linguagem acessível ao ensino médio. As atividades descritas a seguir correspondem ao registro de execução da equipe.
+
+\subsubsection{Atividades realizadas}
+Foi configurado o repositório Git no GitHub, incluindo o arquivo \path{.gitignore}, para organizar o código e controlar quais arquivos serão acompanhados no versionamento. Também foi estruturado o quadro inicial do Jira, com as quatro sprints e os respectivos prazos. Essa organização servirá de referência para distribuir e acompanhar as próximas tarefas.
+
+Na preparação dos dados, foi desenvolvido o script Python \path{preparacao_dados.py} para baixar o Fashion-MNIST. O registro da sprint informa a separação de imagens para treinamento e validação e a exportação de um painel inicial de amostras da base no diretório \path{artefatos/}. As características dessa organização são apresentadas a seguir.
+
+Na dimensão educativa, foi redigido o objetivo do material introdutório com linguagem acessível ao ensino médio.
+
+\subsubsection{Organização inicial dos dados}
+\label{sec:dados}
+O Fashion-MNIST possui 60.000 imagens no conjunto oficial de treinamento e 10.000 no conjunto oficial de teste, distribuídas em dez categorias~\cite{fashionmnist}. Nesta sprint, o conjunto de treinamento foi subdividido em 50.000 imagens para treinamento e 10.000 para validação, com divisão estratificada e semente 42. A estratificação busca manter a proporção das categorias nos dois subconjuntos; a semente permite repetir a mesma divisão.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}YrY@{}}
+\toprule
+\textbf{Conjunto} & \textbf{Quantidade} & \textbf{Origem e destinação} \\
+\midrule
+Treinamento & 50.000 & Parte do treinamento oficial, destinada ao aprendizado da GAN. \\
+Validação & 10.000 & Parte reservada do treinamento oficial para verificações posteriores. \\
+Teste oficial & 10.000 & Conjunto original separado, mantido fora do treinamento. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Essa subdivisão é um detalhamento da preparação dos dados que não estava especificado no plano. Ela mantém a separação do teste oficial. Sua existência não significa que o modelo já foi treinado ou avaliado; o procedimento de uso da validação será definido durante a implementação. O painel exportado contém exemplos da base, e não imagens produzidas pela GAN.
+
+\subsubsection{Comparação entre o planejado e o realizado}
+\label{sec:comparacao}
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}Y@{}}
+\toprule
+\textbf{Previsão da Sprint 1} & \textbf{Registro no encerramento} \\
+\midrule
+Organizar o repositório e preparar o ambiente & Repositório configurado, com \path{.gitignore}, e preparação dos dados realizada em Python nos computadores da equipe. \\
+Organizar o Jira e registrar os prazos & Quadro inicial configurado com quatro sprints e prazos. O registro disponível não detalha os cartões e seus critérios de conclusão. \\
+Definir tarefas e responsáveis & Divisão principal entre os integrantes registrada. O detalhamento dos cartões deverá ser vinculado como evidência. \\
+Baixar a base e visualizar exemplos & Script de preparação desenvolvido, divisão dos dados realizada e painel de amostras exportado. \\
+Descrever a proposta educativa & Objetivo educativo e leitores pretendidos definidos. \\
+Registrar atividades, dúvidas e aprendizados & Atividades e contribuições reunidas neste relatório. Faltam as horas, as reflexões individuais e a inclusão das evidências. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsubsection{Recursos utilizados e divisão das tarefas}
+Foram utilizados os computadores pessoais dos integrantes. As ferramentas informadas nesta sprint foram Python 3.10 ou superior, PyTorch, Torchvision, Scikit-learn, Git/GitHub, Jira e Overleaf. Não há uso de infraestrutura de treinamento em nuvem registrado nesta etapa.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}Y@{}}
+\toprule
+\textbf{Integrante} & \textbf{Contribuição na Sprint 1} \\
+\midrule
+Allan Vitor Piran Lemes & Organização do repositório, desenvolvimento da preparação dos dados e caracterização dos leitores da apostila. \\
+Guilherme Rodrigues dos Santos & Estruturação do quadro inicial do Jira e planejamento das tarefas das sprints. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+A distribuição das atividades está de acordo com a divisão principal prevista para a primeira sprint no planejamento entregue. A organização adotada permite que cada integrante conduza suas tarefas e acompanhe o trabalho do colega. As horas efetivamente dedicadas ainda devem ser consolidadas na Seção 2.3.
+
+\subsubsection{Aprendizados, dificuldades e pendências}
+As atividades desta etapa envolveram três temas de aprendizagem: a organização do código em um repositório, a divisão do trabalho em tarefas e prazos e a preparação de uma base de imagens para uso posterior. A separação dos conjuntos também introduziu a distinção entre dados destinados ao treinamento e dados reservados para verificação. No contexto educativo, foi necessário definir uma linguagem acessível para os materiais.
+
+O registro disponível descreve as atividades, mas não apresenta uma reflexão individual sobre os conceitos compreendidos, as dúvidas ou os problemas enfrentados.
+
+Permanecem pendentes de documentação as horas individuais, os links de acesso ao código e ao quadro e a inclusão do painel de amostras.
+
+\subsubsection{Evidências da Sprint 1}
+Os artefatos abaixo foram mencionados no registro de execução. Seus links e imagens devem ser incorporados para permitir a consulta do trabalho realizado.
+\begin{itemize}
+\item \textbf{Repositório:} \pendente{inserir o endereço do GitHub e a referência da versão correspondente ao encerramento da sprint.}
+\item \textbf{Preparação dos dados:} script \path{preparacao_dados.py}. \pendente{Inserir o link para o arquivo e, se disponível, o registro de sua execução.}
+\item \textbf{Painel de amostras:} imagem exportada no diretório \path{artefatos/}. \pendente{Inserir o painel e seu nome completo.}
+\item \textbf{Jira:} \pendente{inserir uma captura ou exportação do quadro com as sprints, os prazos, os responsáveis e a situação das tarefas no encerramento.}
+\end{itemize}
+
+\subsubsection{Encaminhamento para a próxima sprint}
+A continuidade prevista é estudar uma implementação introdutória de GAN, adaptar o código e executar um primeiro treinamento. Esses encaminhamentos seguem o planejamento entregue; não representam atividades concluídas na Sprint 1.
+
+\section{Resultados Obtidos e Verificação dos Materiais}
+\subsection{Resultados Parciais da Sprint 1}
+Os resultados registrados nesta etapa são o repositório organizado, o quadro inicial do Jira, o script de preparação do Fashion-MNIST, a divisão dos dados e o painel de exemplos da base. Também foram descritos o objetivo educativo e os leitores pretendidos. Essas entregas estabelecem as condições iniciais para o desenvolvimento do modelo e para o acompanhamento do projeto.
+
+O relato da equipe indica avanço nas atividades de organização e preparação previstas. Sua documentação ainda precisa ser complementada com evidências, horas realizadas e reflexões individuais.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{Referências}
+
+\bibitem{fashionmnist}
+XIAO, Han; RASUL, Kashif; VOLLGRAF, Roland.
+\textbf{Fashion-MNIST: a Novel Image Dataset for Benchmarking Machine Learning Algorithms}.
+2017. Repositório do projeto disponível em:
+\url{https://github.com/zalandoresearch/fashion-mnist}.
+\end{thebibliography}
+
+\end{document}

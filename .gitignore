@@ -6,3 +6,5 @@ env/
 .vscode/
 checkpoints/
 artefatos/verificacao_*/
+.ipynb_checkpoints/
+artefatos/cgan/verificacao_*/

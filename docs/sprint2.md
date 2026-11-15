@@ -2,8 +2,7 @@
 
 Este registro complementa o PDF recebido, que documenta o encerramento da Sprint 1.
 O encaminhamento para a Sprint 2 está na seção 4.1.7: estudar uma implementação
-introdutória, adaptar o código, executar um primeiro treinamento e iniciar contato
-com um parceiro educativo. O PDF não especifica um número mínimo de épocas.
+introdutória, adaptar o código e executar um primeiro treinamento. O PDF não especifica um número mínimo de épocas.
 
 ## Conceitos para a apresentação
 
@@ -64,7 +63,7 @@ O treinamento local e seus resultados devem ser consultados em:
 - `checkpoints/sprint2_local/gerador.pt`: modelo para geração (fora do Git).
 
 O resultado observado e o tempo medido estão registrados ao final deste documento. Não confundir essa nova execução com as 15 épocas
-representadas nos artefatos originais do parceiro.
+representadas nos artefatos originais de Allan.
 
 ## Verificações realizadas
 
@@ -86,12 +85,9 @@ Elas não são evidência de qualidade visual de um treinamento completo.
 - Registrar as horas efetivamente dedicadas por integrante; tempo de máquina
   treinando sozinha não é dedicação ativa, conforme o PDF.
 - Escrever as reflexões individuais sobre o que foi compreendido e as dificuldades.
-- Registrar o contato ou a tentativa de contato com o parceiro educativo, com
-  informação verdadeira sobre sua participação.
 - Atualizar o Jira e incorporar links, imagens e resultados ao relatório.
 
-A interface educativa, a seleção de categorias e a validação com o público não
-foram implementadas nesta adaptação da Sprint 2.
+A interface educativa não fazia parte da implementação encerrada na Sprint 2; foi acrescentada na Sprint 3. A geração permanece incondicional.
 
 ## Resultado da execução de 30/10/2026
 
@@ -106,7 +102,7 @@ Na época 0, as saídas são texturas acinzentadas sem formas reconhecíveis. Ap
 época, aparecem contornos que lembram roupas e calçados, mas há bastante borramento
 e padrões quadriculados. Algumas amostras continuam difíceis de interpretar.
 Isso demonstra uma mudança inicial das saídas, sem comprovar qualidade suficiente
-para uma apresentação final ao público.
+para considerar as imagens suficientemente nítidas.
 
 A escala de cinza das novas grades é fixa entre 0 e 1 e o gerador é visualizado em
 modo de avaliação. O script original ajustava o contraste de cada imagem
@@ -126,4 +122,8 @@ python3 treinar_gan.py --epocas 15 --nome sprint2_local --retomar
 Isso executará mais 14 épocas. Pelo tempo desta primeira época, a estimativa inicial
 é de cerca de 69 minutos adicionais, sujeita à carga e à temperatura da máquina.
 Não foi executado esse prolongamento nesta adaptação. As imagens antigas de 15 épocas
-continuam sendo evidências da execução do parceiro, não desta execução local.
+continuam sendo evidências da execução de Allan, não desta execução local.
+
+## Ajuste de escopo — 15/11/2026
+
+Este arquivo é memória de desenvolvimento entre chats. O escopo atual é produzir GAN, aplicação, documentação e apostila, verificadas pelos autores. A versão corrente do relatório está em `Sprint3.tex`.
